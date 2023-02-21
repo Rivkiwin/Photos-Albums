@@ -17,7 +17,7 @@ function SharedAlbum() {
 
     return (
         <>
-            <Button variant="primary" size="sm" onClick={handleShow} className="btn btn-secondary">
+            <Button variant="outline-primary" size="sm" onClick={handleShow}>
                 Share Album
             </Button>
             <Modal show={show} onHide={handleClose}>

@@ -10,6 +10,8 @@ export default class AuthService {
   }
 
   async signIn(user: { password: string, name: string }) {
+    console.log(user);
+    
     const response = await fetch('https://jsonplaceholder.typicode.com/users');
     const users = await response.json();
     for (let i = 0; i < users.length; ++i) {

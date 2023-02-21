@@ -1,11 +1,14 @@
 import { createContext, useState } from 'react';
+import { AlbumService } from '../services/AlbumService';
 import AuthService from '../services/AuthService';
 const services = {
-  authService: new AuthService()
+  authService: new AuthService(),
+  albumService: new AlbumService(),
 };
 
  interface IServices {
-    services:{ authService?: AuthService}
+    services:{ authService?: AuthService, 
+    albumService?: AlbumService}
 }
 const AppContext = createContext({});
 const { Provider } = AppContext;

@@ -1,9 +1,10 @@
 .albumsList {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
+  grid-template-columns: repeat(3, max(170px, 33%));
+  width: 95%;
+  gap: 10px;
 }
 .album-title {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
