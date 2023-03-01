@@ -4,10 +4,7 @@ function Todos() {
 
     const [todos, setTodos] = useState([]);
 
-    useEffect(() => {
-        tasks()
 
-    }, [])
 
     const tasks = async () => {
         const id = await JSON.parse(localStorage.getItem("currentUser") as any).id;

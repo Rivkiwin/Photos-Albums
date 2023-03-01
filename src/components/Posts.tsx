@@ -12,9 +12,6 @@ function Posts() {
     const [flag, setFlag] = useState<any[]>([]);
     let { url, path } = useRouteMatch();
 
-    useEffect(() => {
-        getPosts();
-    }, [])
 
     const getPosts = async () => {
         const id = JSON.parse(localStorage.getItem("currentUser") as any).id;

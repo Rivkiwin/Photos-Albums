@@ -1,10 +1,7 @@
-export class AlbumService {
-    add() {}
-    delete(AlbumId: string) {
-        console.log(AlbumId, 'deleted' );
-        
-    }
-    getAll() {}
-    getById() {}
+import { BaseService } from "./BaseService";
 
+export class AlbumService extends BaseService {
+    constructor(setMessage: any) {
+        super('album/', setMessage)
+    }
 }

@@ -2,3 +2,13 @@
 .auth-wrapper {
   margin-top: 75px;
 }
+
+.ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+body {
+  overflow-x: hidden;
+}

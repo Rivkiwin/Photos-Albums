@@ -4,7 +4,7 @@ import Modal from 'react-bootstrap/Modal';
 
 export type ItemType = 'photo' | 'album'
 
-function DeleteModal({ deleteFunction, itemType }: { deleteFunction: any, itemType: ItemType }) {
+function DeleteModal({ deleteFunction, itemType, disabled }: { deleteFunction: any, itemType: ItemType, disabled: boolean }) {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -12,7 +12,10 @@ function DeleteModal({ deleteFunction, itemType }: { deleteFunction: any, itemTy
 
   return (
     <>
-      <Button variant="outline-secondary" onClick={handleShow} className="btn-sm">
+      <Button variant="outline-secondary"
+        onClick={handleShow}
+        disabled={disabled}
+        className="btn-sm">
         Delete
       </Button>
 
@@ -22,17 +25,17 @@ function DeleteModal({ deleteFunction, itemType }: { deleteFunction: any, itemTy
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header closeButton>
+        <Modal.Header closeButton className={'bg-dark text-white'}>
           <Modal.Title>Delete {itemType}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className={'bg-dark text-white'}>
           Are you sure you want to delete?
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+        <Modal.Footer className={'bg-dark text-white'}>
+          <Button variant="outline-light btn-sm" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={() => { handleClose(); deleteFunction() }}>Delete</Button>
+          <Button variant="outline-light  btn-sm" onClick={() => { handleClose(); deleteFunction() }}>Delete</Button>
         </Modal.Footer>
       </Modal>
     </>

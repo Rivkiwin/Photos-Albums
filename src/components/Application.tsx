@@ -7,12 +7,6 @@ import {
     Link,
     useRouteMatch
 } from "react-router-dom";
-import Logout from './Logout';
-import LogIn from './LogIn';
-import Todos from './Todos';
-import Posts from './Posts';
-import Body from './Body';
-import Photos from './Photos';
 import '../css.css';
 
 function Application() {

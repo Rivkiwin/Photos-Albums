@@ -5,14 +5,14 @@ import {
   Redirect,
   Link
 } from "react-router-dom";
-import LogIn from "./components/LogIn";
+import LogIn from "./components/Auth/LogIn";
 import Application from "./components/Application";
 import NavBar from "./components/navBar";
-import { AppProvider } from "./components/AppProvider";
+import { AuthProvider } from "./components/AuthProvider";
 
 function App() {
   return (
-    <AppProvider>
+    <AuthProvider>
       <Router>
         <div className="App">
           <NavBar />
@@ -27,7 +27,7 @@ function App() {
           </div>
         </div>
       </Router>
-    </AppProvider>
+    </AuthProvider>
   );
 }
 
