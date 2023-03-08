@@ -44,9 +44,7 @@ function NavBar() {
                 </Container>
             </Navbar>
             <Switch>
-                <Route path="/LogIn">
-                    <LogIn />
-                </Route>
+               
                 <Route path="/About">
                    <About/>
                 </Route>
@@ -66,6 +64,9 @@ function NavBar() {
                 </Route>
                 <Route exact path="/Albums/:id">
                     <Photos />
+                </Route>
+                <Route path={["/LogIn", '/']}>
+                    <LogIn />
                 </Route>
             </Switch>
         </>
