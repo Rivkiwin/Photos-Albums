@@ -11,16 +11,16 @@ import { useService } from '../ServiceProvider';
 
 function SharedAlbum({ albumId, method = 'create', permission }: { albumId: string, permission?: Permissions, method?: 'create' | 'edit' }) {
     const [show, setShow] = useState(false);
-    const { currentUser } = useAuth();
-    const { permissionsService, authService, allUsers } = useService();
+    const { currentUser, allUsers } = useAuth();
+    const { permissionsService, authService, } = useService();
     const handleShow = () => setShow(true);
     const [users, setUsers] = useState<any[]>()
     const [permissions, setPermissions] = useState<any>({ addBy: currentUser?.uid });
 
-    const handleClose = () =>{ 
+    const handleClose = () => {
         setShow(false);
         setPermissions({ addBy: currentUser?.uid })
-     };
+    };
 
 
     function handleChange(e: any) {
@@ -63,10 +63,10 @@ function SharedAlbum({ albumId, method = 'create', permission }: { albumId: stri
                             <FormSelect onChange={handleChange} name='userId'
                                 required
                                 disabled={method === 'edit'}>
-                                    <option value={0}>Select User</option>
+                                <option value={0}>Select User</option>
                                 {users?.map(user => {
                                     return (user.uid !== currentUser?.uid || method === 'edit') &&
-                                        <option selected={permission?.userId === user.uid} value={user.uid}>{user.displayName}</option>
+                                        <option key={user.uid} selected={permission?.userId === user.uid} value={user.uid}>{user.displayName}</option>
                                 })}
                             </FormSelect>
                         </div>
@@ -118,7 +118,7 @@ function SharedAlbum({ albumId, method = 'create', permission }: { albumId: stri
                             />
                         </div>
                         <div className="d-grid">
-                            <button type="submit" className="btn btn-secondary" disabled={!permissions?.userId && !permission?.userId}>
+                            <button type="submit" className="btn btn-secondary" disabled={!permissions?.userId && !permission?.userId || permissions?.userId =='0'}>
                                 Save
                             </button>
                         </div>

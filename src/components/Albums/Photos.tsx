@@ -119,7 +119,7 @@ function Photos() {
         <div>
             <NavBar>
                 <Navbar.Brand className='text-white'>
-                    <Link to="/Albums" className='text-white text-decoration-none'>Albums/</Link>{album.title}</Navbar.Brand>
+                    <Link to="/Albums/" className='text-white text-decoration-none'>Albums/</Link>{album.title}</Navbar.Brand>
                 <Nav className="me-auto"></Nav>
 
                 <Form className="d-flex">
@@ -134,7 +134,7 @@ function Photos() {
                 </Form>
                 <Button variant="outline-light" size="sm" className="ml-1"
                     onClick={flitterPhotos}>Search</Button>
-                <Nav.Link className='m-1'> <Button variant="outline-light" size="sm" disabled={!permissions.add}>
+                <div className='m-1'> <Button variant="outline-light" size="sm" disabled={!permissions.add}>
                     <input className='' multiple
                         style={{
                             opacity: 0, width: '0px', position: 'absolute'
@@ -146,7 +146,7 @@ function Photos() {
                     />
                     <label htmlFor="photo_uploads" className='m-0' style={{ cursor: 'pointer' }}>Add Photo</label></Button>
                     <Button variant="outline-light ml-1" size="sm" disabled={!permissions.add} onClick={() => setMethod('edit')}>Edit Title</Button>
-                    <UsersShared permissions={permissions}></UsersShared></Nav.Link>
+                    <UsersShared permissions={permissions}></UsersShared></div>
 
             </NavBar>
             <div className='m-auto text-center w-75 mt-3'>
@@ -167,6 +167,7 @@ function Photos() {
                     pause="hover">
                     {data.map((img: any) => {
                         return <Carousel.Item interval={2000}
+                            id={img._id}
                             style={{ height: '300px' }}>
                             <img className="d-block h-100 m-auto"
                                 src={img.url}
@@ -181,7 +182,7 @@ function Photos() {
                     <Row xs={2} md={4} lg={6} className="bg-dark">
                         {photos.map((img: any) => {
                             return <>
-                                <Col className='p-1 h-100'>
+                                <Col className='p-1 h-100' key={img._id}>
                                     <Photo permissions={permissions} triggerReload={triggerReload} photo={img}></Photo>
                                 </Col>
                             </>

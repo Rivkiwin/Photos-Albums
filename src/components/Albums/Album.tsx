@@ -11,8 +11,8 @@ function Album(props: { album: { album: IAlbum, permissions: Permissions }, isOw
     const [permissions, setPermissions] = useState<any>();
     const [album, setAlbum] = useState<IAlbum>();
 
-    const { currentUser } = useAuth();
-    const { albumService, allUsers } = useService();
+    const { currentUser,allUsers } = useAuth();
+    const { albumService,  } = useService();
 
     function deleteAlbum() {
         albumService.delete(album?._id || '').then(
@@ -63,9 +63,9 @@ function Album(props: { album: { album: IAlbum, permissions: Permissions }, isOw
             }}>
                 <Card.Body>
                     <Card.Text className="text-white text-decoration-none">
-                        <div>create by {allUsers.find(user => user.uid === album?.createBy)?.displayName}</div>
-                        <div>create at {album?.createdAt.split('T')[0]}</div>
-                        <div>update at {album?.updatedAt.split('T')[0]}</div>
+                        <span>create by {allUsers.find(user => user.uid === album?.createBy)?.displayName}</span>
+                        <span>create at {album?.createdAt.split('T')[0]}</span>
+                        <span>update at {album?.updatedAt.split('T')[0]}</span>
                     </Card.Text>
                 </Card.Body>
             </Link>

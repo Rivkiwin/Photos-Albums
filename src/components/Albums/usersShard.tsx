@@ -12,8 +12,8 @@ type SharedWith = Permissions & { addByUserName: string, userName: string };
 export function UsersShared({ permissions }: { permissions: Permissions }) {
     const [show, setShow] = useState(false);
     const [shareds, setShared] = useState<SharedWith[]>([]);
-    const { permissionsService, allUsers } = useService();
-    const { currentUser } = useAuth();
+    const { permissionsService} = useService();
+    const { currentUser, allUsers } = useAuth();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 

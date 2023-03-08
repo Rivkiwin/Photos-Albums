@@ -3,8 +3,9 @@ import { signInWithCustomToken, User } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import AuthService from '../services/AuthService';
 import { auth } from '../services/config/fireBase';
-import { ServiceProvider } from './ServiceProvider';
+import { ServiceProvider, useService } from './ServiceProvider';
 
 
 export function useAuth() {
@@ -17,17 +18,25 @@ type authValeType = {
   setCurrentUser: any,
   loading: boolean,
   setLoading: any,
+  allUsers: User[];
 }
 
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<User>();
   const [loading, setLoading] = useState(true);
-  const history = useHistory();
+  const [allUsers, setUsers] = useState([]);
 
+  const authService = new AuthService()
   async function setUser() {
     const user = auth.currentUser;
     const token = user && (await user.getIdToken());
+
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    authService.listAllUsers().then((res: any) => {
+      console.log('hi', res);
+
+      setUsers(res?.data || [])
+    })
     localStorage.setItem('token', token || '');
   }
 
@@ -52,6 +61,8 @@ export function AuthProvider({ children }: any) {
       else {
         if (!!token && !currentUser) {
           try {
+            console.log(token);
+            
             signInWithCustomToken(auth, token)
           } catch (err) { }
         }
@@ -67,6 +78,7 @@ export function AuthProvider({ children }: any) {
     setCurrentUser,
     loading,
     setLoading,
+    allUsers
   }
 
 

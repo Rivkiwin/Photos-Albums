@@ -1,13 +1,12 @@
 import { getDownloadURL, ref as storageRef, uploadBytesResumable } from 'firebase/storage';
-import { url } from 'inspector';
-import React, { forwardRef, useEffect, useImperativeHandle, useState } from 'react'
+import React, { forwardRef, useImperativeHandle, useState } from 'react'
 import { Form, ProgressBar } from 'react-bootstrap'
 import { storage } from '../../../services/config/fireBase';
 import { useAuth } from '../../AuthProvider';
 import { useService } from '../../ServiceProvider';
 
 const ChooseImg = forwardRef((props: any, ref) => {
-    const [uploadCnt, setCnt] = useState(0);
+    // const [uploadCnt, setCnt] = useState(0);
     const [photos, setPhotos] = useState<any[]>([]);
     const [progress, setProgress] = useState<any>(0);
     const {setLoading} = useAuth();
@@ -42,7 +41,7 @@ const ChooseImg = forwardRef((props: any, ref) => {
                 await uploadTask;
                 const url = await getDownloadURL(uploadTask.snapshot.ref);
                 photoService.create({ url, albumId, title: '' }).then(res => {
-                    setCnt(cnt + 1);
+                    // setCnt(cnt + 1);
                     cnt++;
                 })
             }))
@@ -55,13 +54,14 @@ const ChooseImg = forwardRef((props: any, ref) => {
     return (
         <>
             {showProgress && <ProgressBar now={progress} label={`${progress}%`} className='mt-5' />}
-
             <Form.Group controlId="formFile" className="mb-3 mt-3">
                 <Form.Label>Choose Photos</Form.Label>
                 <input type='file'
                     multiple
+                    id='upload'
                     accept="image/*"
                     className='form-control-sm form-control'
+                    onClick={()=> console.log('click')}
                     onChange={onSelectImage} />
             </Form.Group>
         </>

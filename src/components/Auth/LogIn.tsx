@@ -1,7 +1,8 @@
+import { sendPasswordResetEmail } from 'firebase/auth';
 import { type } from 'os';
 import React, { useContext, useState } from 'react';
 import { Card } from 'react-bootstrap';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import AlertPop from '../Alert';
 import { useAuth } from '../AuthProvider';
 import { useService } from '../ServiceProvider';
@@ -23,7 +24,6 @@ function LogIn() {
         authService.signIn(user).then(res => {
             if (res) {
                 console.log(res);
-                // localStorage.setItem('token', res.data.token)
                 history.push('/albums/');
             }
         })
@@ -57,26 +57,16 @@ function LogIn() {
                                 placeholder="Enter password"
                             />
                         </div>
-                        <div className="mb-3">
-                            <div className="custom-control custom-checkbox">
-                                <input
-                                    type="checkbox"
-                                    className="custom-control-input"
-                                    id="customCheck1"
-                                />
-                                <label className="custom-control-label" htmlFor="customCheck1">
-                                    Remember me
-                                </label>
-                            </div>
-                        </div>
                         <div className="d-grid">
                             <button type="submit" className="btn btn-secondary">
                                 Submit
                             </button>
                         </div>
-                        <p className="forgot-password text-right">
+                        <div className='d-flex justify-content-between mb-2 mt-2'>
+                        <Link to='/forgot-password'>Forgot your Password?</Link>
                             <a href="LogUp">create new accent</a>
-                        </p>
+                            </div>
+
                     </form>
                 </Card>
             </div >

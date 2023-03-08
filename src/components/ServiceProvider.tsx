@@ -16,7 +16,6 @@ type valueType = {
     albumService: AlbumService,
     photoService: PhotoService,
     permissionsService: PermissionsService;
-    allUsers: User[];
 }
 
 const ServiceContext = createContext<valueType>({} as any);
@@ -26,7 +25,6 @@ export function ServiceProvider({ children }: any) {
 
     const [message, setMessage] = useState<{ message: String, type: 'success' | 'danger' } | null>()
     const [show, setShow] = useState(true);
-    const [allUsers, setUsers] = useState([]);
 
     const authService = new AuthService(setMessage);
     const albumService = new AlbumService(setMessage);
@@ -34,9 +32,7 @@ export function ServiceProvider({ children }: any) {
     const permissionsService = new PermissionsService(setMessage);
 
     function getAllUsers() {
-        authService.listAllUsers().then((res: any) => {
-            setUsers(res?.data || [])
-        })
+   
     }
 
 
@@ -58,7 +54,6 @@ export function ServiceProvider({ children }: any) {
         albumService,
         photoService,
         permissionsService,
-        allUsers
     }
 
 

@@ -37,7 +37,11 @@ function Posts() {
         <div className="center row">
             <div className="col-12">
                 <ul>
-                    {posts.map((post:any) => <li className="list-group-item list-group-item-action" id="list-home-list" data-bs-toggle="list" role="tab" aria-controls="list-home">
+                    {posts.map((post:any, index:any) => <li className="list-group-item list-group-item-action"
+                     id="list-home-list"
+                     data-bs-toggle="list" 
+                     key={index}
+                     role="tab" aria-controls="list-home">
 
 
                         <Link className="link" to={{
@@ -47,13 +51,13 @@ function Posts() {
 
                         <button className="btn btn-danger margin" onClick={() => getComments(post.id)}>comments</button>
 
-
+{/* 
                         {flag[post.id] ? comments.map((com:any, index) => <div key={index}>
                             <p > {com.name}</p>
                             <p > {com.email}</p>
                             <p > {com.body}</p>
-                            <br></br>
-                        </div>) : null}
+                            <br></br> */}
+                        {/* </div>) : null} */}
                     </li>)}
                 </ul>
             </div>

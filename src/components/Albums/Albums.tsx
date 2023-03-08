@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PhotoLibraryIcon from '@material-ui/icons/PhotoLibrary';
 import SharedAlbum from './ShareAlbum';
 import Album from './Album';
 import { IAlbum, Permissions } from '../../interface/album';
@@ -57,7 +56,7 @@ function Albums() {
             setFilter(res.data || []);
             setAlbums(res.data || []);
         });
-        albumService.getSherd(currentUser?.uid).then(res => {
+        albumService.getSherd(currentUser?.uid).then((res: any) => {
             setFilterShared(res?.data || [])
             setShardAlbums(res?.data || [])
         })
@@ -69,7 +68,6 @@ function Albums() {
             <NavBar >
                 <Navbar.Brand className='text-white'>Albums</Navbar.Brand>
                 <Nav className="me-auto"></Nav>
-
                 <Form className="d-flex">
                     <Form.Control
                         type="search"
@@ -82,9 +80,8 @@ function Albums() {
                 </Form>
                 <Button variant="outline-light" size="sm" className="ml-1"
                     onClick={flitterAlbums}>Search</Button>
-                <Nav.Link className='m-1'><AddAlbum reloadAlbums={triggerReload} /></Nav.Link>
+                <div className='m-1'><AddAlbum reloadAlbums={triggerReload} /></div>
             </NavBar>
-
             <Accordion className='w-75 m-auto mt-5'>
                 <Accordion.Item eventKey="0">
                     <Accordion.Header><div>
@@ -92,7 +89,7 @@ function Albums() {
                     </div></Accordion.Header>
                     <Accordion.Body>
                         <div className='d-grid mt-1 albumsList m-auto'>
-                            {flittersAlbums.map((album: IAlbum, index) => <div id={album._id}>
+                            {flittersAlbums.map((album: IAlbum, index) => <div key={album._id}>
                                 <Album album={album as any} isOwner={true} triggerReload={triggerReload}></Album></div>)}
                         </div>
                     </Accordion.Body>
@@ -101,7 +98,7 @@ function Albums() {
                     <Accordion.Header>Albums That Shared With Me</Accordion.Header>
                     <Accordion.Body>
                         <div className='d-grid albumsList m-auto'>
-                            {flitterShared.map((album: any) => <div id={album?.album?._id}>
+                            {flitterShared.map((album: any) => <div key={album?.album?._id}>
                                 <Album triggerReload={triggerReload} album={album} isOwner={false}></Album></div>)}
                         </div>
                     </Accordion.Body>

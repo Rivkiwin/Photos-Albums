@@ -2,9 +2,6 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
-  Link,
-  useHistory
 } from "react-router-dom";
 import LogIn from "./components/Auth/LogIn";
 import Application from "./components/Application";

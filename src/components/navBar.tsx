@@ -1,22 +1,28 @@
 import React, { useEffect } from 'react';
-import { Link, Redirect, Route, Switch } from 'react-router-dom';
+import { Link, Redirect, Route, Switch, useHistory } from 'react-router-dom';
 import Albums from './Albums/Albums';
-import Body from './Body';
-import Info from './Info';
 import LogIn from './Auth/LogIn';
 import Photos from './Albums/Photos';
-import Posts from './Posts';
-import Todos from './Todos';
 import Logout from './Auth/Logout';
 import { useAuth } from './AuthProvider';
 import Register from './Auth/Register ';
 import { useService } from './ServiceProvider';
-import Protected from './Application';
 import { Navbar, Container, Nav } from 'react-bootstrap';
+import ForgotPassword from './Auth/forgetPassword';
+import PasswordReset from './Auth/passwordReset';
+import About from './about';
 
 function NavBar() {
     const { currentUser } = useAuth();
-    const { authService } = useService()
+    const { authService } = useService();
+    const history = useHistory();
+
+    function logOut() {
+        localStorage.removeItem('token');
+        authService.logout().then(() => {
+            history.replace('/');
+        })
+    }
 
     return (
         <>
@@ -31,9 +37,9 @@ function NavBar() {
                         {currentUser && <div className='d-flex align-items-center text-white'>
                             <div style={{ minWidth: 'fit-content' }} className='m-2'>
                                 {`hello ${currentUser.displayName}`}</div>
-                            <button className="dropdown-item text-white" onClick={authService.logout}>log out</button> </div>}
-                        {!currentUser && 
-                        <Nav.Link className="nav-item text-white" as={Link} to='/logIn'>log in</Nav.Link>}
+                            <button className="dropdown-item text-white" onClick={logOut}>log out</button> </div>}
+                        {!currentUser &&
+                            <Nav.Link className="nav-item text-white" as={Link} to='/logIn'>log in</Nav.Link>}
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
@@ -41,21 +47,26 @@ function NavBar() {
                 <Route path="/LogIn">
                     <LogIn />
                 </Route>
-                <Route path="/Info">
-                    <Info />
+                <Route path="/About">
+                   <About/>
                 </Route>
+                <Route path='/forgot-password'>
+                    <ForgotPassword />
+                </Route>
+                <Route path="/emulator/action" >
+                    <PasswordReset /></Route>
                 <Route path="/Logout">
                     <Logout />
                 </Route>
                 <Route path="/LogUp">
                     <Register />
                 </Route>
-                    <Route exact path="/Albums">
-                        <Albums />
-                    </Route>
-                    <Route exact path="/Albums/:id">
-                        <Photos />
-                    </Route>
+                <Route exact path="/Albums">
+                    <Albums />
+                </Route>
+                <Route exact path="/Albums/:id">
+                    <Photos />
+                </Route>
             </Switch>
         </>
     )
