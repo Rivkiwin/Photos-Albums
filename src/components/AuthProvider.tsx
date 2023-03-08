@@ -1,8 +1,11 @@
+import axios from 'axios';
+import { signInWithCustomToken, User } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { User } from '../interface/User';
-import auth from '../services/config/fireBase';
-import AlertPop from './Alert';
+import { Spinner } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { auth } from '../services/config/fireBase';
 import { ServiceProvider } from './ServiceProvider';
+
 
 export function useAuth() {
   return useContext(AuthContext);
@@ -14,52 +17,67 @@ type authValeType = {
   setCurrentUser: any,
   loading: boolean,
   setLoading: any,
-  header: any,
-  setErr: any
 }
 
 export function AuthProvider({ children }: any) {
   const [currentUser, setCurrentUser] = useState<User>();
   const [loading, setLoading] = useState(true);
-  const [header, setHeader] = useState<any>('');
-  const [err, setErr]= useState('');
+  const history = useHistory();
+
+  async function setUser() {
+    const user = auth.currentUser;
+    const token = user && (await user.getIdToken());
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    localStorage.setItem('token', token || '');
+  }
 
   // useEffect(() => {
-  //   const unsubscribe = auth.onAuthStateChanged(async (user: any) => {
-  //     console.log(user);
-  //     setCurrentUser(user);
-  //     if (user) {
-  //       try {
-  //         const user = auth.currentUser;
-  //         const token = user && (await user.getIdToken());
+  //   if (currentUser) {
+  //     history.replace('/Albums/');
+  //   }
+  //   else {
+  //     history.replace('/');
+  //   }
+  // }, [currentUser])
 
-  //         const header = {
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //         };
-  //         setHeader(header)
-  //       } catch (err) { }
-  //     }
-  //     setLoading(false);
-  //   });
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged(async (user: any) => {
+      const token = localStorage.getItem('token');
+      setCurrentUser(user);
+      if (user) {
+        try {
+          await setUser();
+        } catch (err) { }
+      }
+      else {
+        if (!!token && !currentUser) {
+          try {
+            signInWithCustomToken(auth, token)
+          } catch (err) { }
+        }
+      }
+      setLoading(false);
+    });
 
-  //   return unsubscribe;
-  // }, []);
+    return unsubscribe;
+  }, []);
 
   const authVale = {
     currentUser,
     setCurrentUser,
     loading,
     setLoading,
-    header,
-    setErr
   }
 
 
   return (
     <ServiceProvider>
+      {loading && <Spinner animation="border" variant="secondary" style={{
+        position: 'absolute',
+        top: '50%',
+        left: ' 50%',
+        zIndex: '100'
+      }} />}
       <AuthContext.Provider value={authVale}>
         {children}
       </AuthContext.Provider>

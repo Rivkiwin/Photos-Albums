@@ -1,5 +1,8 @@
+import { updateProfile, UserCredential } from 'firebase/auth';
 import React, { useState } from 'react';
 import { Card } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
+import { auth } from '../../services/config/fireBase';
 import AlertPop from '../Alert';
 import { useAuth } from '../AuthProvider';
 import { useService } from '../ServiceProvider';
@@ -7,10 +10,8 @@ import { useService } from '../ServiceProvider';
 function Register() {
 
     const { authService } = useService();
-    const { setCurrentUser } = useAuth();
     const history = useHistory();
 
-    const [err, setErr] = useState(false)
     const [user, setUser] = useState({
         email: '',
         password: '',
@@ -24,19 +25,20 @@ function Register() {
     const handleChangeSubmit = (event: any) => {
         event.preventDefault();
         authService.register(user).then(res => {
-            if (res) {
-                setCurrentUser(res.data.user);
-                localStorage.setItem('token', res.data.token);
-                history.push('/albums/');
+            if (auth.currentUser) {
+                updateProfile(auth.currentUser, {
+                    displayName: user.name,
+                }).then((res) => {
+                    history.replace('/albums/');
+                })
             }
+        })
+    };
 
-        });
-    }
     return (
         <>
-            {err && <AlertPop message='err at login pleas try agin' type="danger" />}
             <div className="row justify-content-center mt-5">
-                <Card border="dark d-flex justify-content-center col-4">
+                <Card border="dark d-flex justify-content-center col-4 p-3">
                     <form>
                         <h3>Sign Up</h3>
                         <div className="mb-3">

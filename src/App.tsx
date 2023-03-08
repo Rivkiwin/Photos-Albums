@@ -3,17 +3,20 @@ import {
   Switch,
   Route,
   Redirect,
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
 import LogIn from "./components/Auth/LogIn";
 import Application from "./components/Application";
 import NavBar from "./components/navBar";
 import { AuthProvider } from "./components/AuthProvider";
 
+
 function App() {
+
   return (
-    <AuthProvider>
-      <Router>
+    <Router>
+      <AuthProvider>
         <div className="App">
           <NavBar />
           <div className="auth-wrapper">
@@ -26,8 +29,8 @@ function App() {
             </div>
           </div>
         </div>
-      </Router>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

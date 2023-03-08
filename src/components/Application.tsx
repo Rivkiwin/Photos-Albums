@@ -1,23 +1,15 @@
-import React, { useState } from 'react';
-import Info from "./Info";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Link,
-    useRouteMatch
-} from "react-router-dom";
-import '../css.css';
+import React, { useEffect } from 'react'
+import { Container, Navbar } from 'react-bootstrap';
 
-function Application() {
 
-    const user = JSON.parse(localStorage.getItem("currentUser") as string)
-    let { url, path } = useRouteMatch();
-
+const navBar = ({ children }: any) => {
     return (
-        <div>
-      
-        </div>)
+        <Navbar bg="secondary" variant="secondary">
+            <Container style={{ minWidth: '95vw' }} className='text-white'>
+                <Navbar.Collapse>
+                    {children}
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>)
 }
-
-export default Application;
+export default navBar;

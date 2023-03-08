@@ -1,7 +1,10 @@
 import axios from "axios";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { User } from "../interface/User";
 import { BaseService } from "./BaseService";
+import { auth } from "./config/fireBase";
+
+
 
 export default class AuthService extends BaseService {
   private user?: User;
@@ -11,29 +14,34 @@ export default class AuthService extends BaseService {
     super('user/', setMessage)
   }
 
-  getUserInfo(): User | undefined {
-    return this.user
+  logout() {
+    signOut(auth).catch(error => { this.setMessage({ type: 'danger', message: (error.message).replace('Firebase: ', '') }) });
+    localStorage.removeItem('token');
   }
 
   register(user: any) {
-    return axios.post(`${this.path}signUp`, { user })
-      .then(res => {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
-        return res
-      })
-      .catch(err => this.setMessage({ type: 'danger', message: err.response.data.err }))
-
-  }
-
-  signIn(object: any): Promise<any> {
-    return axios.post(`${this.path}logIn`, object).then(res => {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
-      return res
+    return createUserWithEmailAndPassword(auth, user.email, user.password)
+    .then(res=>{
+      this.setMessage({message:'Successfully SignupUp', type:'success'});
+      return res;
     })
-      .catch(err => this.setMessage({ type: 'danger', message: err.response.data.err }))
+      .catch(error => { this.setMessage({ type: 'danger', message: (error.message).replace('Firebase: ', '') }) })
+  }
 
+  signIn(user: any) {
+    return signInWithEmailAndPassword(auth, user.email, user.password)
+   .then(res=>{
+      this.setMessage({message:'Successfully SignIn', type:'success'});
+      return res;
+    })
+      .catch(error => { this.setMessage({ type: 'danger', message: (error.message).replace('Firebase: ', '') }) });
 
   }
 
-  signOut() { }
+  listAllUsers = () =>{
+    return axios.post(this.path+'getAllUsers')
+      .catch(error => { this.setMessage({ type: 'danger', message: (error.message).replace('Firebase: ', '') }) });
+
+  }
+
 }

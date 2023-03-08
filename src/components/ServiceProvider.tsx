@@ -1,17 +1,11 @@
+import { User } from 'firebase/auth';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Alert } from 'react-bootstrap';
 import { AlbumService } from '../services/AlbumService';
 import AuthService from '../services/AuthService';
-export type { IServices };
-
-interface IServices {
-    services: {
-        authService?: AuthService,
-        albumService?: AlbumService
-    }
-}
-
-
+import { auth } from '../services/config/fireBase';
+import { PermissionsService } from '../services/permissionsService';
+import { PhotoService } from '../services/PhotoService';
 
 export function useService() {
     return useContext<valueType>(ServiceContext);
@@ -19,7 +13,10 @@ export function useService() {
 
 type valueType = {
     authService: AuthService,
-    albumService: AlbumService
+    albumService: AlbumService,
+    photoService: PhotoService,
+    permissionsService: PermissionsService;
+    allUsers: User[];
 }
 
 const ServiceContext = createContext<valueType>({} as any);
@@ -29,18 +26,39 @@ export function ServiceProvider({ children }: any) {
 
     const [message, setMessage] = useState<{ message: String, type: 'success' | 'danger' } | null>()
     const [show, setShow] = useState(true);
+    const [allUsers, setUsers] = useState([]);
 
     const authService = new AuthService(setMessage);
     const albumService = new AlbumService(setMessage);
+    const photoService = new PhotoService(setMessage);
+    const permissionsService = new PermissionsService(setMessage);
+
+    function getAllUsers() {
+        authService.listAllUsers().then((res: any) => {
+            setUsers(res?.data || [])
+        })
+    }
+
 
     useEffect(() => {
-        console.log(message);
         setShow(true)
     }, [message])
 
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(async (user: any) => {
+            if (user) {
+                getAllUsers();
+            }
+        });
+        return unsubscribe;
+    }, [])
+
     const value = {
         authService,
-        albumService
+        albumService,
+        photoService,
+        permissionsService,
+        allUsers
     }
 
 
@@ -54,6 +72,7 @@ export function ServiceProvider({ children }: any) {
                     width: ' 96%',
                     marginLeft: '2%'
                 }}
+                className='position-fixed'
                 key={message.type}
                 variant={message.type}
                 onClose={() => setShow(false)}

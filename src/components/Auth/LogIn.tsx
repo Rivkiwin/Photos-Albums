@@ -20,11 +20,10 @@ function LogIn() {
 
     const handleChangeSubmit = async (event: any) => {
         event.preventDefault();
-        authService.signIn({ user }).then(res => {
+        authService.signIn(user).then(res => {
             if (res) {
                 console.log(res);
-                localStorage.setItem('token', res.data.token)
-                setCurrentUser(res.data.user);
+                // localStorage.setItem('token', res.data.token)
                 history.push('/albums/');
             }
         })

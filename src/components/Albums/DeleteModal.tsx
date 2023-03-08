@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 
-export type ItemType = 'photo' | 'album'
+export type ItemType = 'photo' | 'album' | 'permissions'
 
 function DeleteModal({ deleteFunction, itemType, disabled }: { deleteFunction: any, itemType: ItemType, disabled: boolean }) {
   const [show, setShow] = useState(false);
@@ -14,8 +14,8 @@ function DeleteModal({ deleteFunction, itemType, disabled }: { deleteFunction: a
     <>
       <Button variant="outline-secondary"
         onClick={handleShow}
-        disabled={disabled}
-        className="btn-sm">
+        className="btn-sm"
+        disabled={disabled}>
         Delete
       </Button>
 
