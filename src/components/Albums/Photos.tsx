@@ -17,7 +17,7 @@ import { AlbumService } from '../../services/AlbumService';
 
 
 function Photos() {
-
+    let cnt = 0;
     const { state } = useLocation();
     let { album, permissions }: any = state;
     const { id } = useParams<any>();
@@ -92,8 +92,8 @@ function Photos() {
                 (snapshot) => {
 
                     // update progress
-                    const _progress = (((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed()) as any / images.length + index * 100 / images.length;
-                    console.log(_progress, progress);
+                    const _progress =Math.fround((cnt/ images.length)* 100 + (((snapshot.bytesTransferred / snapshot.totalBytes) * 100).toFixed()));
+                    console.log(_progress, progress, 'lll', cnt);
 
                     setProgress(progress + _progress)
                 },
@@ -102,6 +102,7 @@ function Photos() {
             await uploadTask;
             setLoading(true);
             const url = await getDownloadURL(uploadTask.snapshot.ref);
+            cnt++;
             photoService.create({ url, albumId: album._id, title: '' }).then(() => triggerReload(true));
         });
         setShowProgress(false);

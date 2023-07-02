@@ -14,7 +14,7 @@ export default class AuthService extends BaseService {
     super('user/', setMessage)
   }
 
-  passwordReset = async (email: string) => {
+ passwordReset  = async (email: string) => {
     return await sendPasswordResetEmail(auth, email)
       .then(res => {
         this.setMessage({ message: 'The Email has been sent; Check your Inbox!', type: 'success' });
